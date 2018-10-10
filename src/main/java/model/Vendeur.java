@@ -1,10 +1,14 @@
 package model;
 
-import javax.persistence.Embedded;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Vendeur {
@@ -13,49 +17,48 @@ public class Vendeur {
 	private Long id;
 	private String name;
 	private int age;
-	@Embedded
-	private Produits offre;
 	
-	
-	
+	@OneToMany(mappedBy = "vendeur", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+	Set<Produits> listeproduits = new HashSet<Produits>();
+
 	public Vendeur() {
 		super();
 	}
-	
-	public Vendeur(String name, int age, Produits offre) {
+
+	public Vendeur(String name, int age) {
 		super();
 		this.name = name;
 		this.age = age;
-		this.offre = offre;
+
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public int getAge() {
 		return age;
 	}
+
 	public void setAge(int age) {
 		this.age = age;
 	}
-	public Produits getOffre() {
-		return offre;
-	}
-	public void setOffre(Produits offre) {
-		this.offre = offre;
-	}
+
 	public Long getId() {
 		return id;
 	}
-
-	@Override
-	public String toString() {
-		return "Vendeur [id=" + id + ", name=" + name + ", age=" + age + ", offre=" + offre + "]";
+	
+	
+	public void addProduit(Produits p) {
+		
+		listeproduits.add(p);
+		p.setVendeur(this);
+		
 	}
 	
-	
-	
-	
+
 }

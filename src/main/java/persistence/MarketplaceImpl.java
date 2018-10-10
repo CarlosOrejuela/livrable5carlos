@@ -18,7 +18,7 @@ public class MarketplaceImpl implements MarketPlaceDAO {
 		try {
 			txn.begin();
 			Vendeur v = new Vendeur();
-			v = em.find(Vendeur.class, v.getId());
+			v = em.find(Vendeur.class, id);
 			System.out.println(v);
 
 			txn.commit();
@@ -42,13 +42,36 @@ public class MarketplaceImpl implements MarketPlaceDAO {
 	}
 
 	@Override
-	public int create(Vendeur v) throws Exception {
+	public void create(Vendeur v) throws Exception {
 
 		try {
 			txn.begin();
-			Vendeur v1 = new Vendeur();
 
-			em.persist(v1);
+			em.persist(v);
+			txn.commit();
+
+		} catch (Exception e) {
+
+			if (txn != null) {
+				txn.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (em != null) {
+				em.close();
+			}
+			
+		}
+
+	}
+
+	@Override
+	public Vendeur update(Vendeur v) throws Exception {
+		Vendeur vUpdate = null;
+		try {
+			txn.begin();
+			vUpdate = em.merge(v);
+			
 			txn.commit();
 
 		} catch (Exception e) {
@@ -65,19 +88,33 @@ public class MarketplaceImpl implements MarketPlaceDAO {
 				emf.close();
 			}
 		}
-		return 0;
+		return vUpdate;
+
 	}
 
 	@Override
-	public int update(Vendeur v) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public void delete(Vendeur v) throws Exception {
 
-	@Override
-	public int delete(Vendeur v) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		try {
+			txn.begin();
+			em.remove(v);
+			txn.commit();
+
+		} catch (Exception e) {
+
+			if (txn != null) {
+				txn.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (em != null) {
+				em.close();
+			}
+			if (emf != null) {
+				emf.close();
+			}
+		}
+
 	}
 
 }

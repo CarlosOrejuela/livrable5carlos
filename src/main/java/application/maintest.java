@@ -12,21 +12,44 @@ public class maintest {
 
 		MarketPlaceDAO dao = new MarketplaceImpl();
 
-		Vendeur v = new Vendeur();
-		v.setAge(24);
-		v.setName("Carlos");
-
-		Produits p = new Produits();
-		p.setCategorie("Chaussures");
-		p.setMarque("Nike");
-		p.setTaille("44");
-		v.setOffre(p);
-
-		dao.create(v);
+		
+		// CREATION D'UN VENDEUR ET ATTRIBUTION DE DEUX PRODUITS
+//		Vendeur v = new Vendeur();
+//		v.setAge(25);
+//		v.setName("Madjid");
+//
+//		Produits p = new Produits();
+//		p.setCategorie("Sneakers");
+//		p.setMarque("Nike");
+//		p.setTaille("42");
+//
+//		Produits p2 = new Produits();
+//		p2.setCategorie("Chemise");
+//		p2.setMarque("Balenciaga");
+//		p2.setTaille("S");
+//
+//		v.addProduit(p);
+//		v.addProduit(p2);
+//		
+//		dao.create(v);
+		
 
 		
 		
+		Produits p3 = new Produits();
+		p3.setCategorie("Pantalon");
+		p3.setMarque("Gucci");
+		p3.setTaille("42");
 		
+		Vendeur v = dao.findById((long) 1);
+		v.addProduit(p3);
+		dao.update(v);
+		
+		
+		
+		
+		
+
 	}
 
 }
